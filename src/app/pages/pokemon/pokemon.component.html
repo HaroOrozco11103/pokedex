@@ -1,0 +1,106 @@
+<div *ngIf="pokemon.length == 0" class="card-body py-3">
+  NO EXISTEN POKEMON DE ESTE TIPO
+</div>
+
+<div class="card-body py-3">
+  <div *ngIf="pokemon.length > 0" class="table-responsive">
+    <table class="table table-hover table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 poke">
+      <thead>
+        <tr class="fw-bolder text-muted">
+          <th class="min-w-50px">Sprite</th>
+          <th class="min-w-50px">Nombre</th>
+          <th class="min-w-50px">Tipos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let poke of pokemon" (click)="tarjetaPokemon(poke.name, modalTarjeta)">
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="d-flex justify-content-start flex-column">
+                <span class="text-dark fw-bolder text-hover-primary fs-6">
+                  <img src="{{ poke.sprites.front_default }}" alt="" width="50" height="50" class="d-inline-block align-text-top" onerror="this.src='assets/img/missingno.png'">
+                </span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="d-flex justify-content-center flex-column">
+                <span class="text-dark fw-bolder text-hover-primary fs-6">
+                  {{ poke.name }}
+                </span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-end">
+              <div class="d-flex justify-content-end flex-column">
+                <span *ngFor="let tipo of poke.types" class="text-dark fw-bolder text-hover-primary fs-6">
+                  {{ tipoEspanol(tipo.type.name) }}
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+<ng-template #modalTarjeta let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title poke" id="modal-title">
+      {{ tarjetaActual.nombre }} <img *ngIf="tarjetaActual.shiny" src="assets/img/shiny.png" width="20" height="20"/>
+    </h4>
+    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cerrar')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card mb-5 mb-xl-10">
+      <div class="card-body pt-9 pb-0">
+        <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+          <div class="me-7 mb-4 cursor-pointer">
+            <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+              <img src="{{ tarjetaActual.imagen }}"/>
+            </div>
+          </div>
+
+
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+              <div class="d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                  <a class="btn btn-sm btn-light-success fw-bolder ms-2 fs-8 py-1 px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">
+                    Peso: {{ tarjetaActual.peso }}kg
+                  </a>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <a class="btn btn-sm btn-light-success fw-bolder ms-2 fs-8 py-1 px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">
+                    Tipos:
+                    <span *ngFor="let tipo of tarjetaActual.tipo"> {{ tipoEspanol(tipo.type.name) }} </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="mostrarMovimientos" class="poke contenedorMoves">
+      <a *ngFor="let mov of tarjetaActual.movimientos" class="btn btn-sm btn-light-success fw-bolder ms-2 fs-8 py-1 px-3 movimiento" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">
+        {{ mov.move.name }}
+      </a>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button *ngIf="mostrarMovimientos" type="button" ngbAutofocus class="btn btn-danger" (click)="mostrarMovimientos = false">Ocultar movimientos</button>
+    <button *ngIf="!mostrarMovimientos" type="button" ngbAutofocus class="btn btn-danger" (click)="mostrarMovimientos = true">Mostrar movimientos</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('Cancelar')">Salir</button>
+  </div>
+</ng-template>
