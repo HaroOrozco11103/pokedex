@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'pokedex';
+
+  constructor(
+    private router: Router
+  ) { }
+
+  busqueda(f: NgForm) {
+    console.log("XDDDD", f.value.tipo);
+    this.router.navigate(["pokemon/" + f.value.tipo]).then(() => {
+      document.location.reload();
+    });
+  }
 }
