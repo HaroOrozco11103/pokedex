@@ -1,0 +1,3 @@
+<div class="contenedorTipos">
+  <div *ngFor="let tipo of tipos" class="tipo" (click)="pokemonPorTipo(tipo.name)">{{ tipo.nombre }}</div>
+</div>
